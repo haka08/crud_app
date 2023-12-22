@@ -1,0 +1,24 @@
+
+  <link rel="stylesheet" href="/styles.css">
+<body>
+
+
+  <%- include('partials/header') %>
+
+  <main>
+    <!-- Loop through posts and display each one -->
+    <% posts.forEach(post => { %>
+      <article>
+        <h2><a href="/posts/<%= post._id %>"><%= post.title %></a></h2>
+        <p><%= post.content.substring(0, 200) %>...</p>
+        <% if (post.image) { %>
+          <img class='home-image' src="<%= post.image %>" alt="Post Image">
+        <% } %>
+        <!-- Add more details or formatting as needed -->
+      </article>
+    <% }); %>
+  </main>
+
+
+</body>
+</html>

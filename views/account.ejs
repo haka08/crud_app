@@ -1,0 +1,66 @@
+<!-- views/account.ejs -->
+
+<%- include('partials/header') %>
+
+<main>
+  <h2>User Details</h2>
+  <p>Name: <%= currentUser.firstName %> <%= currentUser.lastName %></p>
+  <p>Username: <%= currentUser.username %></p>
+  <p>Email: <%= currentUser.email %></p>
+  <button onclick="confirmDeleteAcc()">Delete Account</button>
+  <form class='logout_button' action="/logout" method="get">
+    <button type="submit">Logout</button>
+  </form>
+  
+
+
+
+  <h2>Your Posts</h2>
+  <button onclick="window.location.href='/create'" class="create-button">Create Post</button>
+  <% if (userPosts.length > 0) { %>
+    <ul class="account-posts">
+      <% userPosts.forEach(post => { %>
+        <li class="account-post">
+          <div class="post-info">
+            <h3><a href="/posts/<%= post._id %>"><%= post.title %></a></h3>
+            <p>Date: <%= post.createdAt.toDateString() %></p>
+          </div>
+          <div class="post-actions">
+            <button onclick="location.href='/posts/edit/<%= post._id %>'" class="edit-post-button">Edit</button>
+            <button onclick="confirmDeletePost('<%= post._id %>')" type="button">Delete Post</button>
+           
+            <% if (post.image) { %>
+              <img class='account-post-image' src="<%= post.image %>" alt="Post Image">
+            <% } %>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>You haven't created any posts yet.</p>
+  <% } %>
+
+
+
+</main>
+
+<script>
+  function confirmDeletePost(postId) {
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (confirmed) {
+      // Redirect to the delete route if the user confirms
+      window.location.href = `/posts/delete/${postId}`;
+    }
+  }
+
+function confirmDeleteAcc() {
+  const isConfirmed = confirm("Are you sure you want to delete your account?");
+  if (isConfirmed) {
+    // Redirect to the route that handles account deletion
+    window.location.href = "/delete-account";
+  }
+}
+
+</script>
+
+<%- include('partials/footer') %>
